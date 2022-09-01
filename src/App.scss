@@ -1,0 +1,41 @@
+.header {
+  width: 100vw;
+  height: 10vh;
+  background-color: rgb(82, 60, 246);
+  color: white;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.main {
+  width: 100vw;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  height: 90vh;
+
+  &_select-container {
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+
+    select {
+      width: 140px;
+      height: 40px;
+    }
+  }
+
+  &_input-container {
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+
+    input {
+      width: 130px;
+      height: 35px;
+    }
+  }
+}
