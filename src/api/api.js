@@ -15,14 +15,6 @@ var requestOptions = {
   headers: myHeaders,
 };
 
-// fetch(
-//   "https://api.apilayer.com/exchangerates_data/convert?to={to}&from={from}&amount={amount}",
-//   requestOptions
-// )
-//   .then((response) => response.text())
-//   .then((result) => console.log(result))
-//   .catch((error) => console.log("error", error));
-
 export const getCurrency = (from, to, amount) => {
   return fetch(
     `https://api.apilayer.com/exchangerates_data/convert?to=${to}&from=${from}&amount=${amount}`,
@@ -30,5 +22,15 @@ export const getCurrency = (from, to, amount) => {
   )
     .then((response) => response.text())
     .then((result) => result)
+    .catch((error) => console.log("error", error));
+};
+
+export const getCurrencyLive = () => {
+  return fetch(
+    "https://api.apilayer.com/currency_data/live?source=USD&currencies=EUR,UAH",
+    requestOptions
+  )
+    .then((response) => response.text())
+    .then((result) => JSON.parse(result))
     .catch((error) => console.log("error", error));
 };

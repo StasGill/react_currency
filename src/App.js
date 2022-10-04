@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
-import { getCurrency } from "./api/api";
+import { getCurrency, getCurrencyLive } from "./api/api";
 import "./App.scss";
 
+function round(value, precision) {
+  if (precision === 0) return Math.round(value);
+
+  let exp = 1;
+  for (let i = 0; i < precision; i++) exp *= 10;
+
+  return Math.round(value * exp) / exp;
+}
+
 function App() {
-  const [currencyData, setCurrencyData] = useState([]);
+  const [currencyData, setCurrencyData] = useState({});
   const [leftSelect, setLeftSelect] = useState("USD");
   const [rightSelect, setRightSelect] = useState("UAH");
   const [leftInput, setLeftInput] = useState(1);
@@ -23,12 +32,14 @@ function App() {
 
   const leftCountInput = async (e) => {
     setLeftInput(e.target.value);
+    if (!e.target.value) return;
     const data = await getCurrency(leftSelect, rightSelect, e.target.value);
     setRightInput(JSON.parse(data).result);
   };
 
   const rightCountInInput = async (e) => {
     setRightInput(e.target.value);
+    if (!e.target.value) return;
     const data = await getCurrency(rightSelect, leftSelect, e.target.value);
     setLeftInput(JSON.parse(data).result);
   };
@@ -37,18 +48,20 @@ function App() {
     getCurrency("USD", "UAH", 1).then((data) => {
       setRightInput(JSON.parse(data).result);
     });
+    getCurrencyLive().then((data) => setCurrencyData(data));
   }, []);
 
   return (
     <div className="App">
       <div className="header">
+        <p>CURRENCY CHECK</p>
         <div>
-          {/* <p> USD = {currencyData[0]?.buy} UAH</p>
-          <p> USD = {currencyData[0]?.buy} UAH</p> */}
+          <span>1 USD = {round(currencyData.quotes?.USDUAH, 2)} UAH</span>
+          <span>1 USD = {round(currencyData.quotes?.USDEUR, 2)} EUR</span>
         </div>
       </div>
       <div className="main">
-        <div>
+        <div className="main_select">
           <div className="main_select-container">
             <select value={leftSelect} onChange={leftCountCurrency}>
               <option value="USD">USD</option>
